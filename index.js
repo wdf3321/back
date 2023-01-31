@@ -34,7 +34,7 @@ app.use((_, req, res, next) => {
   res.status(400).json({ success: false, message: '格式錯誤' })
 })
 
-app.use('/user', userRoute)
+app.use('/users', userRoute)
 // app.use('/products', productRoute)
 // app.use('/orders', orderRoute)
 

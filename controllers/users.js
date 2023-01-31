@@ -68,21 +68,21 @@ export const extend = async (req, res) => {
   }
 }
 
-export const getUser = (req, res) => {
+export const getUser = async (req, res) => {
   try {
-    res.status(200).json({
+    res.status(200).send({
       success: true,
       message: '',
       result: {
+        _id: req.user._id,
         account: req.user.account,
         phone: req.user.phone,
         name: req.user.name,
-        role: req.user.role,
-        reserve: req.user.reserve
+        role: req.user.role
       }
     })
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message })
+    res.status(500).send({ success: false, message: '伺服器錯誤' })
   }
 }
 
