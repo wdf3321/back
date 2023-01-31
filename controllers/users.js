@@ -24,7 +24,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
+    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '100 s' })
     req.user.tokens.push(token)
     await req.user.save()
     res.status(200).json({
@@ -33,10 +33,13 @@ export const login = async (req, res) => {
       result: {
         token,
         account: req.user.account,
+        name: req.user.name,
         phone: req.user.phone,
         // cart: req.user.cart.reduce((total, current) => total + current.quantity, 0),
-        role: req.user.role
+        role: req.user.role,
+        reserve: [req.user.reserve]
       }
+
     })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
@@ -72,13 +75,14 @@ export const getUser = (req, res) => {
       message: '',
       result: {
         account: req.user.account,
-        email: req.user.email,
-        cart: req.user.cart.reduce((total, current) => total + current.quantity, 0),
-        role: req.user.role
+        phone: req.user.phone,
+        name: req.user.name,
+        role: req.user.role,
+        reserve: req.user.reserve
       }
     })
   } catch (error) {
-    res.status(500).json({ success: false, message: '未知錯誤' })
+    res.status(500).json({ success: false, message: error.message })
   }
 }
 

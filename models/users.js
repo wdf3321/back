@@ -19,6 +19,10 @@ const ReserveSchema = new Schema({
 })
 
 const schema = new Schema({
+  name: {
+    type: String,
+    required: true
+  },
   account: {
     type: String,
     required: [true, '缺少帳號'],
