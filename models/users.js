@@ -1,16 +1,20 @@
-import { Schema, model, ObjectId, Error } from 'mongoose'
-import validator from 'validator'
+import { Schema, model, Error } from 'mongoose'
+// import validator from 'validator'
 import bcrypt from 'bcrypt'
 
 const ReserveSchema = new Schema({
-  r_id: {
-    type: ObjectId,
-    ref: 'reserve',
-    required: [true, '缺少商品']
+  date: {
+    type: String,
+    default: Date.now(),
+    required: [true, '缺少日期']
   },
-  quantity: {
+  time: {
+    type: String,
+    required: [true, '缺少時間']
+  },
+  member: {
     type: Number,
-    required: [true, '缺少數量']
+    required: [true, '缺少人數']
   }
 })
 
@@ -27,16 +31,9 @@ const schema = new Schema({
     type: String,
     required: true
   },
-  email: {
-    type: String,
-    required: [true, '缺少信箱'],
-    unique: true,
-    validate: {
-      validator (email) {
-        return validator.isEmail(email)
-      },
-      message: '信箱格式錯誤'
-    }
+  phone: {
+    type: Number,
+    required: true
   },
   tokens: {
     type: [String],
