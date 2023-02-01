@@ -1,8 +1,8 @@
-import { Schema } from 'mongoose'
+import { model, Schema } from 'mongoose'
 
 const ArticleSchema = new Schema({
   date: {
-    type: date,
+    type: String,
     default: Date.now()
   },
   title: {

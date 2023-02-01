@@ -17,7 +17,7 @@ app.use(cors({
   // origin 代表請求來源, Postman 等後端的請求會是 undefined
   // callback(錯誤, 是否允許)
   origin (origin, callback) {
-    if (origin.includes('github') || origin.includes('localhost') || origin === undefined) {
+    if (origin === undefined || origin.includes('github') || origin.includes('localhost')) {
       callback(null, true)
     } else {
       callback(new Error(), false)

@@ -43,16 +43,17 @@ const schema = new Schema({
     type: [String],
     default: []
   },
-  reserve: {
-    type: [ReserveSchema],
-    default: []
-  },
   role: {
     type: Number,
     // 0 = 使用者
     // 1 = 管理員
     default: 0
+  },
+  reserve: {
+    type: [ReserveSchema],
+    default: []
   }
+
 }, { versionKey: false })
 
 schema.pre('save', function (next) {
