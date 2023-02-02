@@ -2,8 +2,7 @@ import { model, Schema } from 'mongoose'
 
 const ArticleSchema = new Schema({
   date: {
-    type: Date,
-    default: Date.now().toLocaleString(),
+    type: String,
     required: false
   },
   title: {
