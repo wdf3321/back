@@ -49,7 +49,7 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    req.user.tokens = req.user.tokens.filter(token => token !== req.tokens)
+    req.user.tokens = req.user.tokens.filter(tokens => tokens !== req.token)
     await req.user.save()
     res.status(200).json({ success: true, message: '' })
   } catch (error) {
@@ -59,7 +59,7 @@ export const logout = async (req, res) => {
 
 export const extend = async (req, res) => {
   try {
-    const idx = req.user.tokens.findIndex(token => token === req.token)
+    const idx = req.user.tokens.findIndex(tokens => tokens === req.token)
     const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
     req.user.tokens[idx] = token
     await req.user.save()
