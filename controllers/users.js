@@ -31,6 +31,7 @@ export const login = async (req, res) => {
       success: true,
       message: '',
       result: {
+        _id: req.user._id,
         token,
         account: req.user.account,
         name: req.user.name,
