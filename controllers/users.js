@@ -89,15 +89,15 @@ export const getUser = async (req, res) => {
 
 export const editUser = async (req, res) => {
   try {
-    const { data } = {
-      _id: req.user._id,
+    const data = {
       account: req.user.account,
       phone: req.user.phone,
       name: req.user.name
     }
-    const result = await users.findByIdAndUpdate(req.user._id, data, { new: true })
+    console.log(req.user)
+    const result = await users.findOneAndUpdate({ name: req.user.name }, data, { new: true })
     console.log(result)
-    res.status(200).send({ success: true, message: '', result })
+    res.status(200).send({ success: true, message: '' })
   } catch (error) {
     if (error.name === 'ValidationError') {
       const key = Object.keys(error.errors)[0]

@@ -10,7 +10,7 @@ router.post('/login', content('application/json'), auth.login, login)
 router.delete('/logout', auth.jwt, logout)//,
 // router.patch('/extend', auth.jwt, extend)
 router.get('/', auth.jwt, getUser)
-router.patch('/:id', content('multipart/form-data'), auth.jwt, editUser)//
+router.patch('/:id', content('application/json'), auth.jwt, editUser)//
 // router.patch('/:id', content('multipart/form-data'), auth.jwt, editUser)
 // router.post('/cart', content('application/json'), auth.jwt, editCart)
 // router.get('/cart', auth.jwt, getCart)
