@@ -88,15 +88,12 @@ export const getUser = async (req, res) => {
 }
 export const getAllUser = async (req, res) => {
   try {
+    const data = await users.find()
     res.status(200).send({
       success: true,
       message: '',
       result: {
-        _id: req.user._id,
-        account: req.user.account,
-        phone: req.user.phone,
-        name: req.user.name,
-        role: req.user.role
+        data
       }
     })
   } catch (error) {

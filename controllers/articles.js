@@ -4,7 +4,8 @@ export const createArticles = async (req, res) => {
   try {
     const result = await articles.create({
       date: req.body.date,
-      title: req.body.title
+      title: req.body.title,
+      inside: req.body.inside
     })
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {

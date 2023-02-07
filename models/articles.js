@@ -9,6 +9,11 @@ const ArticleSchema = new Schema({
     type: String,
     required: [true, '請填入文章名稱'],
     minlength: [1, '請填入文章名稱']
+  },
+  inside: {
+    type: String,
+    required: [true, '請填入文章名稱'],
+    minlength: [1, '請填入文章名稱']
   }
 
 }, { versionKey: false })
