@@ -57,17 +57,17 @@ export const logout = async (req, res) => {
   }
 }
 
-export const extend = async (req, res) => {
-  try {
-    const idx = req.user.tokens.findIndex(tokens => tokens === req.token)
-    const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
-    req.user.tokens[idx] = token
-    await req.user.save()
-    res.status(200).json({ success: true, message: '', result: token })
-  } catch (error) {
-    res.status(500).json({ success: false, message: '未知錯誤' })
-  }
-}
+// export const extend = async (req, res) => {
+//   try {
+//     const idx = req.user.tokens.findIndex(tokens => tokens === req.token)
+//     const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
+//     req.user.tokens[idx] = token
+//     await req.user.save()
+//     res.status(200).json({ success: true, message: '', result: token })
+//   } catch (error) {
+//     res.status(500).json({ success: false, message: '未知錯誤' })
+//   }
+// }
 
 export const getUser = async (req, res) => {
   try {
