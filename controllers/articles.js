@@ -27,6 +27,7 @@ export const getAllArticles = async (req, res) => {
 
 export const deleteArticles = async (req, res) => {
   try {
+    console.log(req)
     const result = await articles.deleteOne(req.title)
     res.status(200).send({ success: true, message: '', result })
   } catch (error) {
