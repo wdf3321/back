@@ -86,6 +86,23 @@ export const getUser = async (req, res) => {
     res.status(500).send({ success: false, message: '伺服器錯誤' })
   }
 }
+export const getAllUser = async (req, res) => {
+  try {
+    res.status(200).send({
+      success: true,
+      message: '',
+      result: {
+        _id: req.user._id,
+        account: req.user.account,
+        phone: req.user.phone,
+        name: req.user.name,
+        role: req.user.role
+      }
+    })
+  } catch (error) {
+    res.status(500).send({ success: false, message: '伺服器錯誤' })
+  }
+}
 
 export const editUser = async (req, res) => {
   try {
