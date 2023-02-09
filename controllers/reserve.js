@@ -28,7 +28,15 @@ export const getReservelimit = async (req, res) => {
   }
 }
 
-
+export const deleteReserve = async (req, res) => {
+  try {
+    console.log(req.params.id)
+    const result = await reserve.findByIdAndDelete({ _id: req.params.id })
+    res.status(200).json({ success: true, message: result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}
 // export const createOrder = async (req, res) => {
 //   try {
 //     // 檢查購物車是不是空的

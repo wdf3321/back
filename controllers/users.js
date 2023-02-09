@@ -109,17 +109,35 @@ export const editUser = async (req, res) => {
       name: req.user.name
     }
     console.log(req.user)
-    const result = await users.findOneAndUpdate({ name: req.user.name }, data, { new: true })
-    console.log(result)
-    res.status(200).send({ success: true, message: '' })
+    console.log(req.params.id)
+    const result = await users.findByIdAndUpdate(req.params.id, data, { new: true })
+    res.status(200).send({ success: true, message: result })
   } catch (error) {
     if (error.name === 'ValidationError') {
       const key = Object.keys(error.errors)[0]
       const message = error.errors[key].message
       res.status(400).send({ success: false, message })
     } else {
-      res.status(500).send({ success: false, message: '伺服器錯誤' })
+      res.status(500).send({ success: false, message: error.message })
     }
+  }
+}
+
+export const getMyReserve = async (req, res) => {
+  try {
+    const result = await users.findById({ _id: req.user.id }).populate('reserve')
+    res.status(200).json({ success: true, message: result.reserve })
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+export const deleteUser = async (req, res) => {
+  try {
+    console.log(req)
+    const result = await users.findByIdAndDelete({ _id: req.params.id })
+    res.status(200).json({ success: true, message: result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
   }
 }
 // export const editCart = async (req, res) => {
