@@ -8,7 +8,7 @@ const router = Router()
 
 router.post('/create', jwt, admin, createArticles)
 router.get('/', getAllArticles)
-router.delete('/delete', jwt, admin, deleteArticles)
+router.delete('/delete/', jwt, admin, deleteArticles)
 
 // router.get('/', jwt, getMyOrders)
 

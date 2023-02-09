@@ -79,7 +79,8 @@ export const getUser = async (req, res) => {
         account: req.user.account,
         phone: req.user.phone,
         name: req.user.name,
-        role: req.user.role
+        role: req.user.role,
+        reserve: req.user.reserve
       }
     })
   } catch (error) {
