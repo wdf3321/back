@@ -48,6 +48,11 @@ const schema = new Schema({
         member: {
           type: Number,
           required: [true, '缺少人數']
+        },
+        name: {
+          type: String,
+          default: ''
+
         }
       }
     ],

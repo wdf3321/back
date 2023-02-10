@@ -1,5 +1,4 @@
 import users from '../models/users.js'
-// import products from '../models/products.js'
 import jwt from 'jsonwebtoken'
 
 export const register = async (req, res) => {

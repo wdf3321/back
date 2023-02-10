@@ -1,5 +1,5 @@
 import reserve from '../models/reserve.js'
-// import users from '../models/users.js'
+import users from '../models/users.js'
 
 export const createReserve = async (req, res) => {
   try {
@@ -33,6 +33,35 @@ export const deleteReserve = async (req, res) => {
     console.log(req.params.id)
     const result = await reserve.findByIdAndDelete({ _id: req.params.id })
     res.status(200).json({ success: true, message: result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}
+export const makeReserve = async (req, res) => {
+  try {
+    const find = await users.find({ name: req.user.name })
+    const timefind = await reserve.find({ date: req.body.date, time: req.body.time })
+    console.log(find, timefind)
+    if (timefind.result !== []) {
+      const result = await req.user.reserve.push({ time: req.body.time, date: req.body.date, member: req.body.member, name: req.body.name })
+      await req.user.save()
+      res.status(200).json({ success: true, message: result })
+      return
+    } else if (timefind.result === []) {
+      res.status(404).json({ success: false, message: '' })
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+
+export const getAllReserve = async (req, res) => {
+  try {
+    const find = await users.find({ reserve: { $exists: true, $ne: [] } })
+
+    console.log(find)
+    const result = await users.reserve.find()
+    res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
   }
