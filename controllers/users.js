@@ -104,13 +104,12 @@ export const getAllUser = async (req, res) => {
 export const editUser = async (req, res) => {
   try {
     const data = {
-      account: req.user.account,
-      phone: req.user.phone,
-      name: req.user.name
+      account: req.body.account,
+      phone: req.body.phone,
+      name: req.body.name
     }
-    console.log(req.user)
-    console.log(req.params.id)
-    const result = await users.findByIdAndUpdate(req.params.id, data, { new: true })
+    console.log(req.body)
+    const result = await users.findOneAndUpdate({ _id: req.user._id }, data, { new: true })
     res.status(200).send({ success: true, message: result })
   } catch (error) {
     if (error.name === 'ValidationError') {

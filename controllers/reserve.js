@@ -60,8 +60,7 @@ export const getAllReserve = async (req, res) => {
     const find = await users.find({ reserve: { $exists: true, $ne: [] } })
 
     console.log(find)
-    const result = await users.reserve.find()
-    res.status(200).json({ success: true, message: '', result })
+    res.status(200).json({ success: true, message: '', find })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
   }
