@@ -5,6 +5,7 @@ import cors from 'cors'
 import userRoute from './routes/users.js'
 import articlesRoute from './routes/articles.js'
 import reserveRoute from './routes/reserve.js'
+import bannerRoute from './routes/banner.js'
 import './passport/passport.js'
 
 mongoose.connect(process.env.DB_URL)
@@ -37,6 +38,7 @@ app.use((_, req, res, next) => {
 app.use('/users', userRoute)
 app.use('/articles', articlesRoute)
 app.use('/reserve', reserveRoute)
+app.use('/banner', bannerRoute)
 
 app.get('/', (req, res) => {
   res.status(200).json({ success: true, message: '' })
