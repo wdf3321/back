@@ -20,7 +20,7 @@ const schema = new Schema({
     required: true
   },
   phone: {
-    type: Number,
+    type: String,
     required: true
   },
   tokens: {
