@@ -65,7 +65,7 @@ export const makeReserve = async (req, res) => {
     })
 
     await Promise.all([reservefind.save(), user.save()])
-    deleteReserveWithZeroMembers()
+    // deleteReserveWithZeroMembers()
     res.status(200).json({ success: true, message: result })
   } catch (error) {
     res.status(500).json({ success: false, message: error.message })
@@ -81,29 +81,52 @@ export const findAllUsersReserves = async (req, res) => {
     res.status(500).json({ success: false, message: error.message })
   }
 }
+
 export const deleteReservation = async (req, res) => {
   try {
-    const usersWithReservations = await users.find().populate('reserve')
-    const reservations = usersWithReservations.flatMap(user => user.reserve)
-    const reservation = reservations.find(r => r._id.equals(req.params.id))
-    if (!reservation) {
-      return res.status(404).json({ success: false, message: '找不到' })
+    // console.log(req.body)
+    const userfind = await users.find()
+    const timefind = await reserve.find({ date: req.body.date, time: req.body.time })
+    console.log(timefind)
+    let result = '找不到'
+
+    if (userfind.result !== [] && timefind.result !== []) {
+      for (let i = 0; i < userfind.length; i++) {
+        let update = false
+        const user = userfind[i]
+        // eslint-disable-next-line camelcase
+        let reserveMembers = 0
+        // eslint-disable-next-line camelcase
+        for (let j = 0; j < user.reserve.length; j++) {
+          // eslint-disable-next-line camelcase
+          if (user.reserve[j]._id.toString() === req.body.id) {
+            // eslint-disable-next-line camelcase
+            reserveMembers = user.reserve[j].member
+            user.reserve.splice(j, j + 1)
+            update = true
+          }
+        }
+        if (update) {
+          // eslint-disable-next-line camelcase
+          console.log(timefind)
+          const remain = timefind[0]?.member + reserveMembers
+          await reserve.findOneAndUpdate({ _id: timefind[0]?._id }, { member: remain })
+
+          // eslint-disable-next-line camelcase
+          result = await users.findOneAndUpdate({ _id: user._id }, { reserve: user.reserve })
+        }
+      }
+      // eslint-disable-next-line camelcase
+      res.status(200).json({ success: true, message: result })
+      return
+    } else if (userfind.result === []) {
+      res.status(404).json({ success: false, message: '' })
     }
-    // Remove the reservation from the user's reserve array
-    const user = await users.findOne({ reserve: reservation })
-    // console.log(user)
-    user.reserve.pull(reservation.id)
-    await user.save()
-
-    // Delete the reservation from the database
-    await reservation.remove()
-
-    res.status(200).json({ success: true, message: '預約已刪除' })
   } catch (error) {
+    // console.log(error.message)
     res.status(500).json({ success: false, message: error.message })
   }
 }
-
 // ---------------------------------------------
 export const createReservationsForWeek = async (req, res) => {
   try {
@@ -134,7 +157,7 @@ export const createReservationsForWeek = async (req, res) => {
     res.status(500).json({ success: false, message: error.message })
   }
 }
-
+// eslint-disable-next-line
 const deleteReserveWithZeroMembers = async () => {
   try {
     await reserve.deleteOne({ member: 0 })
