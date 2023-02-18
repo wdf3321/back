@@ -34,6 +34,15 @@ export const deleteArticles = async (req, res) => {
     res.status(500).send({ success: false, message: '伺服器錯誤' })
   }
 }
+export const deleteSelectArticles = async (req, res) => {
+  try {
+    console.log(req)
+    const result = await articles.findByIdAndDelete({ _id: req.params.id })
+    res.status(200).send({ success: true, message: '', result })
+  } catch (error) {
+    res.status(500).send({ success: false, message: '伺服器錯誤' })
+  }
+}
 // export const getSellProducts = async (req, res) => {
 //   try {
 //     const result = await products.find({ sell: true })
