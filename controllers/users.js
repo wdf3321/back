@@ -39,7 +39,6 @@ export const login = async (req, res) => {
         role: req.user.role,
         reserve: [req.user.reserve]
       }
-
     })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
@@ -106,10 +105,11 @@ export const editUser = async (req, res) => {
     const data = {
       account: req.body.account,
       phone: req.body.phone,
-      name: req.body.name
+      name: req.body.name,
+      password: req.body.password
     }
     console.log(req.body)
-    const result = await users.findOneAndUpdate({ _id: req.user._id }, data, { new: true })
+    const result = await users.findOneAndUpdate({ _id: req.body.id }, data, { new: true })
     res.status(200).send({ success: true, message: result })
   } catch (error) {
     if (error.name === 'ValidationError') {
@@ -137,6 +137,31 @@ export const deleteUser = async (req, res) => {
     res.status(200).json({ success: true, message: result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}
+export const searchUserbyName = async (req, res) => {
+  try {
+    console.log(req.body)
+    const result = await users.find({ name: req.body.search })
+    res.status(200).json({ success: true, message: result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+export const searchUserbyAccount = async (req, res) => {
+  try {
+    const result = await users.find({ account: req.body.search })
+    res.status(200).json({ success: true, message: result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+export const searchUserbyPhone = async (req, res) => {
+  try {
+    const result = await users.find({ phone: req.body.search })
+    res.status(200).json({ success: true, message: result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
   }
 }
 // export const editCart = async (req, res) => {
