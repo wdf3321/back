@@ -9,6 +9,7 @@ router.post('/', content('application/json'), register)
 router.post('/login', content('application/json'), auth.login, login)
 router.delete('/logout', auth.jwt, logout)
 router.get('/', auth.jwt, getUser)
+
 router.post('/search/name', content('application/json'), searchUserbyName)
 router.post('/search/account', content('application/json'), searchUserbyAccount)
 router.post('/search/phone', content('application/json'), searchUserbyPhone)
