@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
 })
 
 app.all('*', (req, res) => {
-  res.status(404).json({ success: false, message: '找不到' })
+  res.status(404).json({ success: false, message: 404 })
 })
 
 app.listen(process.env.PORT || 4000, () => {

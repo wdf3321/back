@@ -157,6 +157,7 @@ export const createReservationsForWeek = async (req, res) => {
     res.status(500).json({ success: false, message: error.message })
   }
 }
+
 // eslint-disable-next-line
 const deleteReserveWithZeroMembers = async () => {
   try {
@@ -164,5 +165,38 @@ const deleteReserveWithZeroMembers = async () => {
     console.log('已刪除人數為0')
   } catch (error) {
     console.error(error)
+  }
+}
+
+export const createReservationsMonday = async (req, res) => {
+  try {
+    const startDate = moment().format('YYYY/MM/DD')
+    const endDate = moment().add(7, 'days').calendar()
+    const time = '09:00'
+    const member = '10'
+    if (moment().format('dddd') === 'Monday') {
+      // Convert start and end dates to moment objects and set start time to 9am
+      const start = moment(startDate).startOf('day').add(9, 'hours')
+      const end = moment(endDate).startOf('day').add(9, 'hours')
+
+      // Create reservations for each day
+      const reservations = []
+      let current = start
+      while (current.isSameOrBefore(end)) {
+        // Only create reservations for days that the business is open
+        if (current.isoWeekday() <= 7) {
+          const newReservation = await reserve.create({
+            date: current.format('YYYY/MM/DD'),
+            time,
+            member
+          })
+          reservations.push(newReservation)
+        }
+        current = current.add(1, 'day')
+      }
+      res.status(200).json({ success: true, message: '一周預約建立成功', reservations })
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
   }
 }
