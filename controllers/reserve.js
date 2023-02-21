@@ -1,7 +1,7 @@
 import reserve from '../models/reserve.js'
 import users from '../models/users.js'
 import moment from 'moment'
-import schedule from 'node-schedule'
+// import schedule from 'node-schedule'
 
 export const createReserve = async (req, res) => {
   try {
@@ -197,6 +197,15 @@ export const createReservationsMonday = async (req, res) => {
       }
       res.status(200).json({ success: true, message: '一周預約建立成功', reservations })
     }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+
+export const deleteAllUserReservations = async (req, res) => {
+  try {
+    const deletedReservations = await users.updateMany({}, { $unset: { reserve: 1 } })
+    res.status(200).json({ success: true, message: deletedReservations })
   } catch (error) {
     res.status(500).json({ success: false, message: error.message })
   }

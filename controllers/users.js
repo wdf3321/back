@@ -100,6 +100,29 @@ export const getAllUser = async (req, res) => {
   }
 }
 
+export const editUserAdmin = async (req, res) => {
+  try {
+    const data = {
+      account: req.body.account,
+      phone: req.body.phone,
+      name: req.body.name,
+      password: req.body?.password,
+      role: req.body?.role,
+      id: req.body?.id
+    }
+    console.log(req.body)
+    const result = await users.findOneAndUpdate({ _id: req.body.id }, data, { new: true })
+    res.status(200).send({ success: true, message: result })
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      const key = Object.keys(error.errors)[0]
+      const message = error.errors[key].message
+      res.status(400).send({ success: false, message })
+    } else {
+      res.status(500).send({ success: false, message: error.message })
+    }
+  }
+}
 export const editUser = async (req, res) => {
   try {
     const data = {
@@ -143,7 +166,9 @@ export const searchUserbyName = async (req, res) => {
   try {
     console.log(req.body)
     const result = await users.find({ name: req.body.search })
-    res.status(200).json({ success: true, message: result })
+    const result2 = await users.find({ account: req.body.search })
+    const result3 = await users.find({ phone: req.body.search })
+    res.status(200).json({ success: true, message: result, result2, result3 })
   } catch (error) {
     res.status(500).json({ success: false, message: error.message })
   }
