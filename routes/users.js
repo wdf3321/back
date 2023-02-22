@@ -18,9 +18,5 @@ router.patch('/admin/:id', content('application/json'), auth.jwt, editUserAdmin)
 router.get('/all', auth.jwt, getAllUser)
 router.get('/:id', auth.jwt, getMyReserve)
 router.delete('/:id', auth.jwt, deleteUser)
-// router.patch('/extend', auth.jwt, extend)
-// router.patch('/:id', content('multipart/form-data'), auth.jwt, editUser)
-// router.post('/cart', content('application/json'), auth.jwt, editCart)
-// router.get('/cart', auth.jwt, getCart)
 
 export default router

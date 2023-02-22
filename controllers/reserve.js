@@ -36,7 +36,15 @@ export const deleteReserve = async (req, res) => {
     const result = await reserve.findByIdAndDelete({ _id: req.params.id })
     res.status(200).json({ success: true, message: result })
   } catch (error) {
-    res.status(500).json({ success: false, message: '未知錯誤' })
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+export const deleteAllReserveLimit = async (req, res) => {
+  try {
+    const result = await reserve.deleteMany()
+    res.status(200).json({ success: true, message: result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: error })
   }
 }
 export const makeReserve = async (req, res) => {
