@@ -103,29 +103,28 @@ export const deleteReservation = async (req, res) => {
       for (let i = 0; i < userfind.length; i++) {
         let update = false
         const user = userfind[i]
-        // eslint-disable-next-line camelcase
+
         let reserveMembers = 0
-        // eslint-disable-next-line camelcase
+
         for (let j = 0; j < user.reserve.length; j++) {
-          // eslint-disable-next-line camelcase
           if (user.reserve[j]._id.toString() === req.body.id) {
-            // eslint-disable-next-line camelcase
             reserveMembers = user.reserve[j].member
             user.reserve.splice(j, j + 1)
             update = true
           }
         }
         if (update) {
-          // eslint-disable-next-line camelcase
           console.log(timefind)
           const remain = timefind[0]?.member + reserveMembers
-          await reserve.findOneAndUpdate({ _id: timefind[0]?._id }, { member: remain })
-
-          // eslint-disable-next-line camelcase
-          result = await users.findOneAndUpdate({ _id: user._id }, { reserve: user.reserve })
+          if (isNaN(remain) === true) {
+            result = await users.findOneAndUpdate({ _id: user._id }, { reserve: user.reserve })
+          } else {
+            await reserve.findOneAndUpdate({ _id: timefind[0]?._id }, { member: remain })
+            result = await users.findOneAndUpdate({ _id: user._id }, { reserve: user.reserve })
+          }
         }
       }
-      // eslint-disable-next-line camelcase
+
       res.status(200).json({ success: true, message: result })
       return
     } else if (userfind.result === []) {
