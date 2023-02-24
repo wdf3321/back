@@ -10,8 +10,7 @@ import {
   makeReserve,
   findAllUsersReserves,
   deleteReservation,
-  createReservationsForWeek,
-  createReservationsMonday, deleteAllUserReservations, deleteAllReserveLimit
+  createReservationsForWeek, deleteAllUserReservations, deleteAllReserveLimit
 } from '../controllers/reserve.js'
 
 const router = Router()
@@ -25,7 +24,7 @@ router.post('/make', auth.jwt, makeReserve)
 router.get('/all', auth.jwt, findAllUsersReserves)
 router.post('/cancel', auth.jwt, deleteReservation)
 router.post('/cancelall', auth.jwt, deleteAllUserReservations)
-router.post('/monday', auth.jwt, createReservationsMonday)
+// router.post('/monday', auth.jwt, createReservationsMonday)
 
 // router.get('/all', jwt, admin, getAllProducts)
 // router.get('/:id', getProduct)

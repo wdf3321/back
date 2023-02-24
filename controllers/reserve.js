@@ -1,7 +1,7 @@
 import reserve from '../models/reserve.js'
 import users from '../models/users.js'
 import moment from 'moment'
-// import schedule from 'node-schedule'
+import schedule from 'node-schedule'
 
 export const createReserve = async (req, res) => {
   try {
@@ -176,11 +176,11 @@ const deleteReserveWithZeroMembers = async () => {
   }
 }
 
-export const createReservationsMonday = async (req, res) => {
+const createReservationsMonday = async (req, res) => {
   try {
     const startDate = moment().format('YYYY/MM/DD')
     const endDate = moment().add(7, 'days').calendar()
-    const time = '09:00'
+    const time = '10:00'
     const member = '10'
     if (moment().format('dddd') === 'Monday') {
       // Convert start and end dates to moment objects and set start time to 9am
@@ -217,3 +217,6 @@ export const deleteAllUserReservations = async (req, res) => {
     res.status(500).json({ success: false, message: error.message })
   }
 }
+
+// eslint-disable-next-line
+const job = schedule.scheduleJob('0 2 * * *', createReservationsMonday)
