@@ -220,7 +220,7 @@ const getReservelimitjob = async () => {
   console.log(result)
 }
 // eslint-disable-next-line
-function job() { schedule.scheduleJob('* 0 * * *', createReservationsMonday) }
+function job() { schedule.scheduleJob('* * * * 1', createReservationsMonday) }
 job()
 // eslint-disable-next-line
 function job2() { schedule.scheduleJob('*/5 * * * *', getReservelimitjob) }
