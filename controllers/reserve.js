@@ -178,6 +178,7 @@ const deleteReserveWithZeroMembers = async () => {
 
 const createReservationsMonday = async (req, res) => {
   try {
+    console.log('createing...')
     const startDate = moment().format('YYYY/MM/DD')
     const endDate = moment().add(7, 'days').calendar()
     const time = '10:00'
@@ -205,7 +206,7 @@ const createReservationsMonday = async (req, res) => {
       res.status(200).json({ success: true, message: '一周預約建立成功', reservations })
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message })
+    // res.status(500).json({ success: false, message: error.message })
   }
 }
 
@@ -219,4 +220,8 @@ export const deleteAllUserReservations = async (req, res) => {
 }
 
 // eslint-disable-next-line
-const job = schedule.scheduleJob('0 2 * * *', createReservationsMonday)
+function job() { schedule.scheduleJob('* 0 * * *', createReservationsMonday) }
+job()
+// eslint-disable-next-line
+function job2() { schedule.scheduleJob('*/5 * * * *', getReservelimit) }
+job2()
