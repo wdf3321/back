@@ -49,5 +49,5 @@ app.all('*', (req, res) => {
 })
 
 app.listen(process.env.PORT || 4000, () => {
-  console.log('伺服器啟動')
+  console.log('Server is running')
 })

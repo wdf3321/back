@@ -23,6 +23,7 @@ export const createReserve = async (req, res) => {
 
 export const getReservelimit = async (req, res) => {
   try {
+    console.log('getting...')
     const result = await reserve.find()
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
@@ -177,36 +178,31 @@ const deleteReserveWithZeroMembers = async () => {
 }
 
 const createReservationsMonday = async (req, res) => {
-  try {
-    console.log('createing...')
-    const startDate = moment().format('YYYY/MM/DD')
-    const endDate = moment().add(7, 'days').calendar()
-    const time = '10:00'
-    const member = '10'
-    if (moment().format('dddd') === 'Monday') {
-      // Convert start and end dates to moment objects and set start time to 9am
-      const start = moment(startDate).startOf('day').add(9, 'hours')
-      const end = moment(endDate).startOf('day').add(9, 'hours')
+  console.log('createing...')
+  const startDate = moment().format('YYYY/MM/DD')
+  const endDate = moment().add(7, 'days').calendar()
+  const time = '10:00'
+  const member = '10'
+  if (moment().format('dddd') === 'Monday') {
+    // Convert start and end dates to moment objects and set start time to 9am
+    const start = moment(startDate).startOf('day').add(9, 'hours')
+    const end = moment(endDate).startOf('day').add(9, 'hours')
 
-      // Create reservations for each day
-      const reservations = []
-      let current = start
-      while (current.isSameOrBefore(end)) {
-        // Only create reservations for days that the business is open
-        if (current.isoWeekday() <= 7) {
-          const newReservation = await reserve.create({
-            date: current.format('YYYY/MM/DD'),
-            time,
-            member
-          })
-          reservations.push(newReservation)
-        }
-        current = current.add(1, 'day')
+    // Create reservations for each day
+    const reservations = []
+    let current = start
+    while (current.isSameOrBefore(end)) {
+      // Only create reservations for days that the business is open
+      if (current.isoWeekday() <= 7) {
+        const newReservation = await reserve.create({
+          date: current.format('YYYY/MM/DD'),
+          time,
+          member
+        })
+        reservations.push(newReservation)
       }
-      res.status(200).json({ success: true, message: '一周預約建立成功', reservations })
+      current = current.add(1, 'day')
     }
-  } catch (error) {
-    // res.status(500).json({ success: false, message: error.message })
   }
 }
 
@@ -218,10 +214,14 @@ export const deleteAllUserReservations = async (req, res) => {
     res.status(500).json({ success: false, message: error.message })
   }
 }
-
+const getReservelimitjob = async () => {
+  console.log('getting...')
+  const result = await reserve.find()
+  console.log(result)
+}
 // eslint-disable-next-line
 function job() { schedule.scheduleJob('* 0 * * *', createReservationsMonday) }
 job()
 // eslint-disable-next-line
-function job2() { schedule.scheduleJob('*/5 * * * *', getReservelimit) }
+function job2() { schedule.scheduleJob('*/5 * * * *', getReservelimitjob) }
 job2()
