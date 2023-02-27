@@ -214,14 +214,10 @@ export const deleteAllUserReservations = async (req, res) => {
     res.status(500).json({ success: false, message: error.message })
   }
 }
-const getReservelimitjob = async () => {
-  console.log('getting...')
-  const result = await reserve.find()
-  console.log(result)
-}
+
 // eslint-disable-next-line
-function job() { schedule.scheduleJob('* * * * 1', createReservationsMonday) }
+function job() { schedule.scheduleJob('* 0 * * 1', createReservationsMonday) }
 job()
 // eslint-disable-next-line
-function job2() { schedule.scheduleJob('*/5 * * * *', getReservelimitjob) }
-job2()
+// function job2() { schedule.scheduleJob('*/5 * * * *', getReservelimitjob) }
+// job2()
