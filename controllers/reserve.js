@@ -177,6 +177,17 @@ const deleteReserveWithZeroMembers = async () => {
   }
 }
 
+
+
+export const deleteAllUserReservations = async (req, res) => {
+  try {
+    const deletedReservations = await users.updateMany({}, { $unset: { reserve: 1 } })
+    res.status(200).json({ success: true, message: deletedReservations })
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+
 const createReservationsMonday = async (req, res) => {
   console.log('createing...')
   const startDate = moment().format('YYYY/MM/DD')
@@ -206,18 +217,71 @@ const createReservationsMonday = async (req, res) => {
   }
 }
 
-export const deleteAllUserReservations = async (req, res) => {
-  try {
-    const deletedReservations = await users.updateMany({}, { $unset: { reserve: 1 } })
-    res.status(200).json({ success: true, message: deletedReservations })
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message })
+const createReservationsMondaynoon = async (req, res) => {
+  console.log('createing...')
+  const startDate = moment().format('YYYY/MM/DD')
+  const endDate = moment().add(7, 'days').calendar()
+  const time = '16:30'
+  const member = '10'
+  if (moment().format('dddd') === 'Monday') {
+    // Convert start and end dates to moment objects and set start time to 9am
+    const start = moment(startDate).startOf('day').add(9, 'hours')
+    const end = moment(endDate).startOf('day').add(9, 'hours')
+
+    // Create reservations for each day
+    const reservations = []
+    let current = start
+    while (current.isSameOrBefore(end)) {
+      // Only create reservations for days that the business is open
+      if (current.isoWeekday() <= 7) {
+        const newReservation = await reserve.create({
+          date: current.format('YYYY/MM/DD'),
+          time,
+          member
+        })
+        reservations.push(newReservation)
+      }
+      current = current.add(1, 'day')
+    }
+  }
+}
+
+const createReservationsMondaynight = async (req, res) => {
+  console.log('createing...')
+  const startDate = moment().format('YYYY/MM/DD')
+  const endDate = moment().add(7, 'days').calendar()
+  const time = '19:30'
+  const member = '10'
+  if (moment().format('dddd') === 'Monday') {
+    // Convert start and end dates to moment objects and set start time to 9am
+    const start = moment(startDate).startOf('day').add(9, 'hours')
+    const end = moment(endDate).startOf('day').add(9, 'hours')
+
+    // Create reservations for each day
+    const reservations = []
+    let current = start
+    while (current.isSameOrBefore(end)) {
+      // Only create reservations for days that the business is open
+      if (current.isoWeekday() <= 7) {
+        const newReservation = await reserve.create({
+          date: current.format('YYYY/MM/DD'),
+          time,
+          member
+        })
+        reservations.push(newReservation)
+      }
+      current = current.add(1, 'day')
+    }
   }
 }
 
 // eslint-disable-next-line
 function job() { schedule.scheduleJob('* 0 * * 1', createReservationsMonday) }
 job()
+function job2() { schedule.scheduleJob('* 0 * * 1', createReservationsMondaynoon) }
+job2()
+function job3() { schedule.scheduleJob('* 0 * * 1', createReservationsMondaynight) }
+job3()
 // eslint-disable-next-line
 // function job2() { schedule.scheduleJob('*/5 * * * *', getReservelimitjob) }
 // job2()
