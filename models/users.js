@@ -1,6 +1,6 @@
 import { Schema, model, Error } from 'mongoose'
 // import validator from 'validator'
-import bcrypt from 'bcrypt'
+import bcryptjs from 'bcryptjs'
 
 const schema = new Schema({
   name: {
@@ -65,7 +65,7 @@ schema.pre('save', function (next) {
   const user = this
   if (user.isModified('password')) {
     if (user.password.length >= 4 && user.password.length <= 20) {
-      user.password = bcrypt.hashSync(user.password, 10)
+      user.password = bcryptjs.hashSync(user.password, 10)
     } else {
       const error = new Error.ValidationError(null)
       error.addError('password', new Error.ValidatorError({ message: '密碼長度錯誤' }))
@@ -80,7 +80,7 @@ schema.pre('findOneAndUpdate', function (next) {
   const user = this._update
   if (user.password) {
     if (user.password.length >= 4 && user.password.length <= 20) {
-      user.password = bcrypt.hashSync(user.password, 10)
+      user.password = bcryptjs.hashSync(user.password, 10)
     } else {
       const error = new Error.ValidationError(null)
       error.addError('password', new Error.ValidatorError({ message: '密碼長度錯誤' }))

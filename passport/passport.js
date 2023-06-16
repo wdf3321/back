@@ -1,5 +1,5 @@
 import passport from 'passport'
-import bcrypt from 'bcrypt'
+import bcryptjs from 'bcryptjs'
 import passportLocal from 'passport-local'
 import passportJWT from 'passport-jwt'
 import users from '../models/users.js'
@@ -17,7 +17,7 @@ passport.use('login', new passportLocal.Strategy({
     if (!user) {
       return done(null, false, { message: '帳號不存在' })
     }
-    if (!bcrypt.compareSync(password, user.password)) {
+    if (!bcryptjs.compareSync(password, user.password)) {
       return done(null, false, { message: '密碼錯誤' })
     }
     return done(null, user)
