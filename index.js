@@ -17,19 +17,22 @@ const app = express()
 // 跨域請求設定
 app.use(
   cors({
-    // origin 代表請求來源, Postman 等後端的請求會是 undefined
-    // callback(錯誤, 是否允許)
-
-    origin(origin, callback) {
-      console.log(origin)
-      if (origin === undefined || origin.includes('github') || origin.includes('localhost')) {
-        callback(null, true)
-      } else {
-        callback(new Error(), false)
-      }
-    }
+    origin: '*'
   })
 )
+
+// origin 代表請求來源, Postman 等後端的請求會是 undefined
+// callback(錯誤, 是否允許)
+
+//     origin(origin, callback) {
+//       if (origin === undefined || origin.includes('github') || origin.includes('localhost')) {
+//         callback(null, true)
+//       } else {
+//         callback(new Error(), false)
+//       }
+//     }
+//   })
+// )
 // 處理跨域錯誤
 app.use((_, req, res, next) => {
   res.status(403).json({ success: false, message: '請求被拒' })
