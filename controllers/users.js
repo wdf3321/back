@@ -1,4 +1,5 @@
 import users from '../models/users.js'
+// import mongoose from 'mongoose'
 import jwt from 'jsonwebtoken'
 
 export const register = async (req, res) => {
